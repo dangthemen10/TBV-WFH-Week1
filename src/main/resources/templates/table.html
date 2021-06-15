@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!--<div id="customerTable" class="col-sm-6 col-md-6">-->
+<div id="customerTable" class="col-sm-12 col-md-12">
+    <th:block th:if="${#lists.isEmpty(page.getContent())}">
+        <h3>No employee</h3>
+    </th:block>
+
+    <th:block th:unless="${#lists.isEmpty(page.getContent())}">
+        <div class="row-md-12"  >
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Address</th>
+                    <th>Score</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody >
+                <tr th:each="contact,iterStat : ${page.getContent()}">
+                    <td th:text="${iterStat.count}"></td>
+                    <td th:text="${contact.name}"></td>
+                    <td th:text="${contact.age}"></td>
+                    <td th:text="${contact.gender}"></td>
+                    <td th:text="${contact.address}"></td>
+                    <td th:text="${contact.score}"></td>
+                    <td th:text="${contact.date}"></td>
+                    <td th:text="${contact.time}"></td>
+                    <td><a th:href="@{/student/{id}/edit(id=${contact.id})}">Edit</a></td>
+                    <td><a th:href="@{/student/{id}/delete(id=${contact.id})}">Delete</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div th:if="${page.getTotalPages() > 1}" class="row row-md-12 row-sm-12" style="padding-left: 320px;">
+            <nav aria-label="Page navigation example">
+                <div class="page-item">
+                    Total Rows: [[${page.getTotalElements()}]]
+                </div>
+                <ul class="pagination" id="btn-get">
+                    <li id="btn=last" class="page-item" th:if="${page.hasPrevious()}">
+                        <button th:onclick="|getUser2(${currentPage-1})|" class="page-link">Previous</button>
+                    </li>
+                    <li class="page-item" th:unless="${page.hasPrevious()}">
+                        <button class="page-link">Previous</button>
+                    </li>
+
+                    <div th:each="i: ${#numbers.sequence(1, page.getTotalPages())}">
+                        <div th:if="${currentPage != i}">
+                            <li class="page-item">
+                                <a class="page-link" th:onclick="|getUser2(${i})|">[[${i}]]</a>
+                            </li>
+                        </div>
+                        <li class="page-item active "><span class="page-link"
+                                                            th:unless="${currentPage != i}">[[${i}]]</span></li>
+                    </div>
+                    <li id="btn-next" class="page-item" th:if="${page.hasNext()}">
+                        <button th:onclick="|getUser2(${currentPage+1})|" class="page-link" >Next</button>
+                    </li>
+                    <li class="page-item" th:unless="${page.hasNext()}">
+                        <button class="page-link" >Next</button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </th:block>
+</div>
+</html>
