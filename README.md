@@ -1,6 +1,9 @@
 # TBV-WFH-Week1
+
 ****
-##I. Hibernate
+
+
+## I. Hibernate
 * Hibernate là framework được sử dụng nhiều nhất hiện nay để giúp lập trình viên Java có thể map các class (Pojo) với một cơ sở dữ liệu bất kỳ.
 
 
@@ -11,7 +14,7 @@
     * Sẽ tốn nhiều công sức khi hệ thống thay đổi CSDL (yêu cầu jdbc mới, code mới)
     * Giao tiếp giữa các bảng thường khó, thiếu tính OOP trong đó.
 
-###1. Định nghĩa
+### 1. Định nghĩa
 * Hibernate là một thư viện ORM (Object Relational Mapping) mã nguồn mở giúp lập trình viên viết ứng dụng Java có thể map các objects (pojo) với hệ quản trị cơ sở dữ liệu quan hệ, và hỗ trợ thực hiện các khái niệm lập trình hướng đối tượng với cớ dữ liệu quan hệ.
 
 
@@ -23,7 +26,7 @@
  
 * Để giao tiếp với Hibernate, chúng ta sẽ tạo ra một Class đại diện cho một Table. Và mọi dữ liệu từ Table trong database sẽ được Hibernate bind vào Class đó cho chúng ta.
 
-###2. POJO
+### 2. POJO
 * Pojo (plain old Java object) là class đại diện cho một Table, thuật ngữ này để định nghĩa chính xác thì không dám chắc, nhưng về ý nghĩa thì nó là một class java thuần túy, rất thuần túy:
 
     * All properties must public setter and getter methods (mọi biến đều phải có get/set)
@@ -54,7 +57,7 @@ public class MyFirstPojo
 }
 ```
 
-###3. Mapping dữ liệu
+### 3. Mapping dữ liệu
 * Khi đã có Class đại diện cho Table rồi, chúng ta sẽ định nghĩa các trường trong class đó tương ứng với column nào trong database bằng tập hợp các Annotaion mà Hibernate cung cấp.
 
 ```
@@ -99,7 +102,7 @@ public List<User> findAll() {
 }
 ```
 
-###4. Hibernate Query Language (HQL)
+### 4. Hibernate Query Language (HQL)
 
 * Hibernate sử dụng ngôn ngữ Hibernate Query Language (HQL) để query dữ liệu. Nó chỉ khác SQL bình thường ở chỗ, đối tượng tác động lúc này là Entity chứ không còn là Table nữa:
 
@@ -116,13 +119,13 @@ Select u.id, u.email from User u;
 -- query toàn bộ object
 Select u from User u;
 ```
-##II. Spring Boot JPA
+## II. Spring Boot JPA
 * Spring Boot JPA là một phần trong hệ sinh thái Spring Data, nó tạo ra một layer ở giữa tầng service và database, giúp chúng ta thao tác với database một cách dễ dàng hơn, tự động config và giảm thiểu code thừa thãi.
 
 
 * Spring Boot JPA đã wrapper Hibernate và tạo ra một interface mạnh mẽ. Nếu như bạn gặp khó khăn khi làm việc với Hibernate thì đừng lo, bạn hãy để Spring JPA làm hộ.
 
-###1. Query Creation
+### 1. Query Creation
 * Trong Spring JPA, có một cơ chế giúp chúng ta tạo ra các câu Query mà không cần viết thêm code. Cơ chế này xây dựng Query từ tên của method.
 
 **User.java**
@@ -156,7 +159,7 @@ public class User implements Serializable {
 
 * Cơ chế xây dựng Query từ tên method này giúp chúng ta tiết kiệm thời gian với những query có logic đơn giản, và cũng đặc biệt hữu ích là nó giống ngôn ngữ con người thường nói hơn là SQL. (human-readable)
 
-###2. Quy tắc đặt tên method trong Spring JPA
+### 2. Quy tắc đặt tên method trong Spring JPA
 
 * Trong Spring JPA, cơ chế xây dựng truy vấn thông qua tên của method được quy định bởi các tiền tố sau: find…By, read…By, query…By, count…By, và get…By.
 
@@ -205,7 +208,7 @@ interface PersonRepository extends JpaRepository<User, Long> {
 List<Person> findByAddressZipCode(ZipCode zipCode);
 ```
 
-###3. @Query
+### 3. @Query
 * Spring JPA còn hỗ trợ chúng ta một cách nguyên thủy khác. Với cách sử dụng @Query, bạn sẽ có thể sử dụng câu truy vấn JPQL (Hibernate) hoặc raw SQL.
 
 **Example:**
@@ -238,13 +241,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
 ```
 
 
-##III. Specification
-###1. JPQL vs Criteria API
+## III. Specification
+### 1. JPQL vs Criteria API
 * JPQL có thể làm đầy đủ chức năng chúng ta cần chỉ với 1 câu lệnh, tuy nhiên, chính vì điều đó, chúng ta thường khó tùy biến hay sử dụng lại nó, thậm chí khó kiểm soát lỗi của nó hơn. Với một câu lệnh phức tạp, chúng ta không biết được nó có lỗi hay không cho tới khi chạy chương trình hay debug.
 
 
 * Criteria API thì ngược lại, nó cho phép chúng ta xây dựng câu lệnh một cách Dynamic, rất linh động, và không bị hardcode trong một String và có thể tái sử dụng lại được. Đặc biệt, vì là Java Object, nên chúng ta sẽ biết một câu lệnh bị lỗi, không đúng quy tắc ngay khi biên dịch chương trình rồi.
-###2. How to use.
+### 2. How to use.
 * **Example:**
 ```
 CriteriaBuilder builder = em.getCriteriaBuilder();
@@ -272,7 +275,7 @@ query.select(root);
 TypedQuery<Office> query = em.createQuery(query);
 List<Office> results = query.getResultList();
 ```
-###3. JPA Meta Model
+### 3. JPA Meta Model
 * **Xét ví dụ**:
 ```
 SELECT o FROM Office o WHERE o.city = 'hanoi'
@@ -351,7 +354,7 @@ query.select(root).where(builder.equal(root.get("city"), "hanoi"));
         }
     }
     ```
-###4. Predicate
+### 4. Predicate
 * Để có thể xây dựng câu truy vấn một cách trọn vẹn, cần biết Predicate. Tạm hiểu một cách đơn giản thì Predicate là một mệnh đề điều kiện trong câu lệnh truy vấn.
 
 
@@ -394,7 +397,7 @@ public Collection<User> getUserByComplexConditions(String name, UserType type) {
     return em.createQuery(query).getResultList();
 }
 ```
-###5. Specification
+### 5. Specification
 
 * Specification là một cách để định nghĩa các Predicate có thể tái sử dụng được.
 
@@ -464,7 +467,7 @@ public final class UserSpecification {
 }
 ```
 
-###6. JpaSpecificationExecutor
+### 6. JpaSpecificationExecutor
 * Để có thể sử dụng được Specification, bạn cần kế thừa JpaSpecificationExecutor từ Spring JPA
 
 ```
@@ -487,7 +490,7 @@ List<T> findAll(@Nullable Specification<T> var1, Sort var2);
 long count(@Nullable Specification<T> var1);
 ```
 
-###7. Usage
+### 7. Usage
 * Lúc này, để sử dụng, bạn gọi Specification.where() để xây dựng cho mình tập các điều kiện để query
 ```
 // Lấy ra user nằm trong tập ID đã cho và có type là NORMAL
