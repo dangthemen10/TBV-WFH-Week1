@@ -88,14 +88,4 @@ public class StudentController {
         redirect.addFlashAttribute("success", "Deleted student successfully!");
         return "redirect:/student/index";
     }
-
-    @GetMapping("/student/search")
-    public String search(@RequestParam("s") String s, Model model) {
-        if (s.equals("")) {
-            return "redirect:/student/index";
-        }
-
-        model.addAttribute("student", studentService.searchStudent(s));
-        return "list";
-    }
 }

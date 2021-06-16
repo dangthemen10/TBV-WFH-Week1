@@ -62,11 +62,6 @@ public class StudentServiceImp implements StudentService {
     }
 
     @Override
-    public List<StudentEntity> searchStudent(String name) {
-        return studentRepository.findByNameContaining(name);
-    }
-
-    @Override
     public StudentEntity findOneStudent(long id) {
         return studentRepository.getOne(id);
     }

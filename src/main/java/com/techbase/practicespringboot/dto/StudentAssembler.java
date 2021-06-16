@@ -27,7 +27,7 @@ public class StudentAssembler {
         if(studentEntity.getDate() != null) {
             SimpleDateFormat originalFormat = new SimpleDateFormat("yyyyMMdd");
             Date date = originalFormat.parse(studentEntity.getDate().toString());
-            SimpleDateFormat newFormat = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat newFormat = new SimpleDateFormat("dd-MM-yyyy");
             studentDTO.setDate(newFormat.format(date));
         }
         if(studentEntity.getTime() != null) {
