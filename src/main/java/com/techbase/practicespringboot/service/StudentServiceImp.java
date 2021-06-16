@@ -1,22 +1,29 @@
 package com.techbase.practicespringboot.service;
 
+import com.techbase.practicespringboot.dto.SearchFormDTO;
 import com.techbase.practicespringboot.dto.StudentAssembler;
 import com.techbase.practicespringboot.dto.StudentDTO;
 import com.techbase.practicespringboot.entity.StudentEntity;
 import com.techbase.practicespringboot.repository.StudentRepository;
+import com.techbase.practicespringboot.repository.StudentSpecification;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -29,6 +36,8 @@ public class StudentServiceImp implements StudentService {
 
     @Autowired
     private StudentRepository studentRepository;
+
+    private StudentSpecification studentSpecification;
 
     @Override
     public Page<StudentDTO> findAllStudent(int pageNo, int pageSize){
@@ -74,5 +83,20 @@ public class StudentServiceImp implements StudentService {
     @Override
     public void deleteStudent(StudentEntity studentEntity) {
         studentRepository.delete(studentEntity);
+    }
+
+    @Override
+    public Page<StudentDTO> search(SearchFormDTO searchFormDTO, int pageNo, int pageSize){
+        Sort sort = Sort.by(
+                Sort.Order.asc(StudentEntity.Fields.name),
+                Sort.Order.asc(StudentEntity.Fields.age),
+                Sort.Order.asc(StudentEntity.Fields.date)
+        );
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
+        Specification<StudentEntity> where = Specification.where(StudentSpecification.toPredicate(searchFormDTO));
+
+        Page<StudentEntity> studentEntityPage = studentRepository.findAll(where, pageable);
+
+        return new StudentAssembler().from(studentEntityPage);
     }
 }

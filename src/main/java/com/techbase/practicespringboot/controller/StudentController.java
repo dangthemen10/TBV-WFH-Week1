@@ -1,5 +1,6 @@
 package com.techbase.practicespringboot.controller;
 
+import com.techbase.practicespringboot.dto.SearchFormDTO;
 import com.techbase.practicespringboot.dto.StudentDTO;
 import com.techbase.practicespringboot.entity.StudentEntity;
 import com.techbase.practicespringboot.service.StudentService;
@@ -30,7 +31,7 @@ public class StudentController {
     private StudentService studentService;
 
     @GetMapping({"/student/index", "/"})
-    public String index(Model model){
+    public String index(Model model, SearchFormDTO searchFormDTO){
         Page<StudentDTO> page = studentService.findAllStudent(PAGE_NO, PAGE_SIZE);
         Integer currentPage = page.getNumber() + 1;
         model.addAttribute("currentPage", currentPage);
@@ -87,5 +88,16 @@ public class StudentController {
         studentService.deleteStudent(student);
         redirect.addFlashAttribute("success", "Deleted student successfully!");
         return "redirect:/student/index";
+    }
+
+    @GetMapping("/student/search")
+    public String studentSearch(SearchFormDTO searchFormDTO, Model model,
+                                @RequestParam(name = "page", required = false, defaultValue = "1") Integer pageNo,
+                                @RequestParam(name = "size", required = false, defaultValue = "5") Integer pageSize) {
+        Page<StudentDTO> page = studentService.search(searchFormDTO, pageNo, pageSize);
+        Integer currentPage = page.getNumber() + 1;
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("page", page);
+        return "list";
     }
 }
