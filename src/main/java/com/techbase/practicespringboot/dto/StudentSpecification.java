@@ -1,10 +1,9 @@
-package com.techbase.practicespringboot.entity;
+package com.techbase.practicespringboot.dto;
 
 
+import com.techbase.practicespringboot.entity.StudentEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.stereotype.Component;
 
 
 import javax.persistence.criteria.Predicate;
@@ -18,11 +17,11 @@ public class StudentSpecification {
             if (StringUtils.isNoneBlank(searchFormDTO.getFname()) && !searchFormDTO.getFname().isEmpty()) {
                 predicates.add(criteriaBuilder.equal(root.get(StudentEntity.Fields.name), StringUtils.deleteWhitespace(searchFormDTO.getFname())));
             }
-            if (StringUtils.isNoneBlank(searchFormDTO.getFgender()) && !searchFormDTO.getFgender().isEmpty()) {
-                predicates.add(criteriaBuilder.equal(root.get(StudentEntity.Fields.gender), StringUtils.deleteWhitespace(searchFormDTO.getFgender())));
-            }
             if (StringUtils.isNoneBlank(searchFormDTO.getFage()) && !searchFormDTO.getFage().isEmpty()) {
                 predicates.add(criteriaBuilder.equal(root.get(StudentEntity.Fields.age), Integer.parseInt(searchFormDTO.getFage())));
+            }
+            if (StringUtils.isNoneBlank(searchFormDTO.getFdate()) && !searchFormDTO.getFdate().isEmpty()) {
+                predicates.add(criteriaBuilder.equal(root.get(StudentEntity.Fields.gender), StringUtils.deleteWhitespace(searchFormDTO.getFdate())));
             }
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };

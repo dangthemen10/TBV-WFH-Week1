@@ -1,4 +1,4 @@
-package com.techbase.practicespringboot.entity;
+package com.techbase.practicespringboot.dto;
 
 import lombok.Data;
 
@@ -6,5 +6,5 @@ import lombok.Data;
 public class SearchFormDTO {
     private String fname;
     private String fage;
-    private String fgender;
+    private String fdate;
 }
