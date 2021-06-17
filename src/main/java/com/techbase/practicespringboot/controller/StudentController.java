@@ -31,21 +31,34 @@ public class StudentController {
     private StudentService studentService;
 
     @GetMapping({"/student/index", "/"})
-    public String index(Model model, SearchFormDTO searchFormDTO){
-        Page<StudentDTO> page = studentService.findAllStudent(PAGE_NO, PAGE_SIZE);
+    public String index(SearchFormDTO searchFormDTO, Model model,
+                                @RequestParam(name = "page", required = false, defaultValue = "1") Integer pageNo,
+                                @RequestParam(name = "size", required = false, defaultValue = "5") Integer pageSize,
+                                @RequestParam(name = "fname", required = false, defaultValue = " ") String  fname,
+                                @RequestParam(name = "fage", required = false, defaultValue = " ") String fage,
+                                @RequestParam(name = "fdate", required = false, defaultValue = " ") String fdate) {
+        Page<StudentDTO> page = studentService.search(searchFormDTO, pageNo, pageSize);
         Integer currentPage = page.getNumber() + 1;
+        StringBuilder stringBuilder = new StringBuilder().append("?fname=").append(fname).append("&fage=").append(fage)
+                .append("&fdate=").append(fdate);
+        model.addAttribute("url", stringBuilder);
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("page", page);
         return "list";
     }
 
-    @GetMapping("/student/page")
+    @GetMapping("/student/search")
     public String abc(@RequestParam(name = "page", required = false, defaultValue = "1") Integer pageNo,
                       @RequestParam(name = "size", required = false, defaultValue = "5") Integer pageSize,
-                      Model model){
+                      Model model, SearchFormDTO searchFormDTO){
 
-        Page<StudentDTO> page = studentService.findAllStudent(pageNo, pageSize);
+        Page<StudentDTO> page = studentService.search(searchFormDTO, pageNo, pageSize);
         Integer currentPage = page.getNumber() + 1;
+        StringBuilder stringBuilder = new StringBuilder()
+                .append("?fname=").append(searchFormDTO.getFname())
+                .append("&fage=").append(searchFormDTO.getFage())
+                .append("&fdate=").append(searchFormDTO.getFdate());
+        model.addAttribute("url", stringBuilder);
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("page", page);
         return "table";
@@ -88,16 +101,5 @@ public class StudentController {
         studentService.deleteStudent(student);
         redirect.addFlashAttribute("success", "Deleted student successfully!");
         return "redirect:/student/index";
-    }
-
-    @GetMapping("/student/search")
-    public String studentSearch(SearchFormDTO searchFormDTO, Model model,
-                                @RequestParam(name = "page", required = false, defaultValue = "1") Integer pageNo,
-                                @RequestParam(name = "size", required = false, defaultValue = "5") Integer pageSize) {
-        Page<StudentDTO> page = studentService.search(searchFormDTO, pageNo, pageSize);
-        Integer currentPage = page.getNumber() + 1;
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("page", page);
-        return "list";
     }
 }
