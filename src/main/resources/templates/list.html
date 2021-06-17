@@ -2,10 +2,17 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="layout :: head"></head>
 <style>
-    body { margin:0; padding:0; }
+    body {
+        margin:0;
+        padding:0;
+        font-family: 'Saira', sans-serif !important;
+        font-size: 13px !important;
+    }
     #map {
         top:0; bottom:0;
         width: 320px;
+        height: 450px;
+        padding-bottom: 50px;
     }
 </style>
 <body>
@@ -19,83 +26,119 @@
         </button>
         <span th:text="${success}"></span>
     </div>
-    <div class="row row-sm-12">
-        <form class="row row-cols-lg-auto g-3 align-items-center" th:action="@{/student/index}" th:object="${searchFormDTO}" method="GET">
-            <div class="col-3">
-                <label class="visually-hidden" for="inlineFormInputGroupUsername">Username</label>
-                <div class="input-group">
-                    <div class="input-group-text">Name</div>
-                    <input type="text" class="form-control" id="inlineFormInputGroupUsername" th:field="*{fname}" placeholder="Type name student . . ." />
+    <div class="row">
+        <div class="col-sm-6" style="padding-top: 70px;
+    padding-left: 50px;">
+            <div class="row row-sm-6" style="padding-bottom:50px">
+                <div class="col-md-1">
+                    <a th:href="@{/student/create}" class="btn btn-success pull-left">
+                        <span class="glyphicon glyphicon-plus"></span> Add new employee
+                    </a>
+                </div>
+                <div class="col-md-2 ml-md-5" style="padding-left: 93px;">
+                    <a th:href="@{/download/file}" class="btn btn-primary pull-left">
+                        <span class="glyphicon glyphicon-plus"></span> Download File
+                    </a>
+                </div>
+                <div class="input-group col-sm-8" style="padding-left: 110px;">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">@Center</span>
+                    </div>
+                    <input id="center" type="text" class="form-control">
                 </div>
             </div>
-
-            <div class="col-3">
-                <label class="visually-hidden" for="inlineFormInputGroupUsername">Age</label>
-                <div class="input-group">
-                    <div class="input-group-text">Age</div>
-                    <input type="text" class="form-control" th:field="*{fage}" placeholder="Type age student . . ."/>
+            <div class="row row-6">
+                <div class="input-group col-sm-6">
+                    <div class="input-group-prepend">
+                        <button id="panTo" class="btn btn-outline-secondary" type="button">JumTo</button>
+                    </div>
+                    <input type="text" class="form-control" id="latLng">
+                </div>
+                <div class="input-group col-sm-6">
+                    <div class="input-group-prepend">
+                        <button class="btn btn-outline-primary" id="btn-jum" type="button">Button</button>
+                    </div>
+                    <select class="custom-select" id="inputGroupSelect03">
+                        <option th:each="coordinate : ${T(com.techbase.practicespringboot.entity.Coordinates).values()}"
+                                th:value="${coordinate.position}" th:text="${coordinate.names}"></option>
+                    </select>
                 </div>
             </div>
-
-            <div class="col-3">
-                <label class="visually-hidden" for="inlineFormInputGroupUsername">Date</label>
-                <div class="input-group">
-                    <div class="input-group-text">Date</div>
-                    <input type="date" class="form-control" th:field="*{fdate}" placeholder="yyyy-mm-dd"/>
-                </div>
-            </div>
-
-            <div class="col-3">
-                <button type="submit" class="btn btn-primary">Search</button>
-            </div>
-        </form>
-    </div>
-    <div class="row row-sm-12">
-        <div class="col-sm-1 float-right">
-            <a th:href="@{/student/create}" class="btn btn-success pull-left">
-                <span class="glyphicon glyphicon-plus"></span> Add new employee
-            </a>
         </div>
-        <div class="col-sm-2 float-right" style="padding-left: 93px;">
-            <a th:href="@{/download/file}" class="btn btn-primary pull-left">
-                <span class="glyphicon glyphicon-plus"></span> Download File
-            </a>
+        <div class="col-sm-6" style="padding-left:150px">
+            <form class="row align-items-center" th:action="@{/student/index}" th:object="${searchFormDTO}" method="GET">
+                <div class="col-9" style="padding-bottom: 10px;">
+                    <label class="visually-hidden" for="inlineFormInputGroupUsername">Username</label>
+                    <div class="input-group">
+                        <div class="input-group-text">Name</div>
+                        <input type="text" class="form-control" id="inlineFormInputGroupUsername" th:field="*{fname}" placeholder="Type name student . . ." />
+                    </div>
+                </div>
+
+                <div class="col-9" style="padding-bottom: 10px;">
+                    <label class="visually-hidden" for="inlineFormInputGroupUsername">Age</label>
+                    <div class="input-group">
+                        <div class="input-group-text">Age</div>
+                        <input type="text" class="form-control" th:field="*{fage}" placeholder="Type age student . . ."/>
+                    </div>
+                </div>
+
+                <div class="col-9" style="padding-bottom: 10px;">
+                    <label class="visually-hidden" for="inlineFormInputGroupUsername">Date</label>
+                    <div class="input-group">
+                        <div class="input-group-text">Date</div>
+                        <input type="date" class="form-control" th:field="*{fdate}" placeholder="yyyy-mm-dd"/>
+                    </div>
+                </div>
+
+                <div class="col-9" style="padding-bottom: 10px; text-align:center">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </form>
         </div>
-<!--        <div class="input-group col-sm-3">-->
-<!--            <div class="input-group-prepend">-->
-<!--                <span class="input-group-text" id="basic-addon1">@Center</span>-->
-<!--            </div>-->
-<!--            <input id="center" type="text" class="form-control">-->
-<!--        </div>-->
-<!--        <div class="input-group col-sm-3">-->
-<!--            <div class="input-group-prepend">-->
-<!--                <button id="panTo" class="btn btn-outline-secondary" type="button">JumTo</button>-->
-<!--            </div>-->
-<!--            <input type="text" class="form-control" id="latLng">-->
-<!--        </div>-->
     </div>
-<!--    <div class="row row-sm-12">-->
-<!--        <div class="input-group col-sm-6">-->
-<!--            <div class="input-group-prepend">-->
-<!--                <button class="btn btn-outline-primary" id="btn-jum" type="button">Button</button>-->
-<!--            </div>-->
-<!--            <select class="custom-select" id="inputGroupSelect03">-->
-<!--                <option th:each="coordinate : ${T(com.techbase.practicespringboot.entity.Coordinates).values()}"-->
-<!--                        th:value="${coordinate.position}" th:text="${coordinate.names}"></option>-->
-<!--            </select>-->
-<!--        </div>-->
-<!--    </div>-->
+    <hr>
     <div class="row row-md-12 row-sm-12">
-<!--        <div id="map" class="col-sm-6 col-md-6"> </div>-->
+        <div id="map" class="col-sm-6 col-md-6"> </div>
 
-<!--        <div id="customerTable" class="col-sm-6 col-md-6">-->
-        <div id="customerTable" class="col-sm-12 col-md-12">
+        <div id="customerTable" class="col-sm-6 col-md-6">
             <th:block th:if="${#lists.isEmpty(page.getContent())}">
                 <h3>No employee</h3>
             </th:block>
 
             <th:block th:unless="${#lists.isEmpty(page.getContent())}">
                 <div class="row-md-12"  >
+                    <div th:if="${page.getTotalPages() > 1}" class="row row-md-12 row-sm-12" style="padding-left: 25%;">
+                        <nav aria-label="Page navigation example">
+                            <div class="page-item">
+                                Total Rows: [[${page.getTotalElements()}]]
+                            </div>
+                            <ul class="pagination" id="btn-get">
+                                <li id="btn=last" class="page-item" th:if="${page.hasPrevious()}">
+                                    <button th:onclick="getUser2([[${currentPage-1}]], [[${url}]]);" class="page-link">Previous</button>
+                                </li>
+                                <li class="page-item" th:unless="${page.hasPrevious()}">
+                                    <button class="page-link">Previous</button>
+                                </li>
+
+                                <div th:each="i: ${#numbers.sequence(1, page.getTotalPages())}">
+                                    <div th:if="${currentPage != i}">
+                                        <li class="page-item">
+                                            <a class="page-link" th:onclick="getUser2([[${i}]], [[${url}]]);">[[${i}]]</a>
+                                        </li>
+                                    </div>
+                                    <li class="page-item active "><span class="page-link"
+                                                                        th:unless="${currentPage != i}">[[${i}]]</span></li>
+                                </div>
+                                <li id="btn-next" class="page-item" th:if="${page.hasNext()}">
+                                    <button th:onclick="getUser2([[${currentPage+1}]], [[${url}]]);" class="page-link" >Next</button>
+                                </li>
+                                <li class="page-item" th:unless="${page.hasNext()}">
+                                    <button class="page-link" >Next</button>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
                     <table class="table table-bordered table-hover">
                         <thead class="table-primary">
                         <tr>
@@ -121,42 +164,11 @@
                             <td th:text="${contact.score}"></td>
                             <td th:text="${contact.date}"></td>
                             <td th:text="${contact.time}"></td>
-                            <td><a th:href="@{/student/{id}/edit(id=${contact.id})}">Edit</a></td>
-                            <td><a th:href="@{/student/{id}/delete(id=${contact.id})}">Delete</a></td>
+                            <td><a th:href="@{/student/{id}/edit(id=${contact.id})}"><i class="far fa-edit"></i></a></td>
+                            <td><a th:href="@{/student/{id}/delete(id=${contact.id})}"><i class="fas fa-trash-alt"></i></a></td>
                         </tr>
                         </tbody>
                     </table>
-                </div>
-                <div th:if="${page.getTotalPages() > 1}" class="row row-md-12 row-sm-12" style="padding-left: 320px;">
-                    <nav aria-label="Page navigation example">
-                        <div class="page-item">
-                            Total Rows: [[${page.getTotalElements()}]]
-                        </div>
-                        <ul class="pagination" id="btn-get">
-                            <li id="btn=last" class="page-item" th:if="${page.hasPrevious()}">
-                                <button th:onclick="getUser2([[${currentPage-1}]], [[${url}]]);" class="page-link">Previous</button>
-                            </li>
-                            <li class="page-item" th:unless="${page.hasPrevious()}">
-                                <button class="page-link">Previous</button>
-                            </li>
-
-                            <div th:each="i: ${#numbers.sequence(1, page.getTotalPages())}">
-                                <div th:if="${currentPage != i}">
-                                    <li class="page-item">
-                                        <a class="page-link" th:onclick="getUser2([[${i}]], [[${url}]]);">[[${i}]]</a>
-                                    </li>
-                                </div>
-                                <li class="page-item active "><span class="page-link"
-                                                                    th:unless="${currentPage != i}">[[${i}]]</span></li>
-                            </div>
-                            <li id="btn-next" class="page-item" th:if="${page.hasNext()}">
-                                <button th:onclick="getUser2([[${currentPage+1}]], [[${url}]]);" class="page-link" >Next</button>
-                            </li>
-                            <li class="page-item" th:unless="${page.hasNext()}">
-                                <button class="page-link" >Next</button>
-                            </li>
-                        </ul>
-                    </nav>
                 </div>
             </th:block>
         </div>
@@ -165,31 +177,6 @@
 <!-- /.container -->
 
 <footer th:replace="layout :: footer"></footer>
-<!--<script th:src="@{/js/custom-mapbox.js}"></script>-->
-<script>
-$(document).ready(()=>{
-    $("#btn-download").click( () => {
-         window.location.href = "/download/file";
-    });
-
-    $("#btn-jum").on('click', () => {
-        let coordinate = $("#inputGroupSelect03").val();
-        jumTo(coordinate);
-    });
-
-    $("#panTo").on('click', () => {
-        let coordinate = $("#latLng").val();
-        jumTo(coordinate);
-    });
-});
-function getUser2(currentPage, url){
-    $.ajax({
-        url: `/student/search${url}&page=${currentPage}`,
-        success: function(result){
-            $('#customerTable').replaceWith(result);
-        },
-    });
-}
-</script>
+<script th:src="@{/js/custom-mapbox.js}"></script>
 </body>
 </html>

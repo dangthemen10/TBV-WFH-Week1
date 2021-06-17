@@ -1,10 +1,11 @@
 package com.techbase.practicespringboot.dto;
 
 import lombok.Data;
+import java.util.List;
 
 @Data
 public class SearchFormDTO {
-    private String fname;
-    private String fage;
+    private List<String> fname;
+    private List<String> fage;
     private String fdate;
 }

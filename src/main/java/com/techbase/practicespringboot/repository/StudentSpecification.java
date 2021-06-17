@@ -18,14 +18,27 @@ public class StudentSpecification {
     public static Specification<StudentEntity> toPredicate(SearchFormDTO searchFormDTO) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
-            if (StringUtils.isNoneBlank(searchFormDTO.getFname()) && !searchFormDTO.getFname().isEmpty()) {
-                searchFormDTO.setFname(StringUtils.deleteWhitespace(searchFormDTO.getFname()));
-                predicates.add(criteriaBuilder.equal(root.get(StudentEntity.Fields.name), searchFormDTO.getFname()));
+
+            if(searchFormDTO.getFname() != null && searchFormDTO.getFname().size() > 0){
+                List<Predicate> listName = new ArrayList<>();
+                searchFormDTO.getFname().forEach(element -> {
+                    if (StringUtils.isNoneBlank(element) && !element.isEmpty()) {
+                        listName.add(criteriaBuilder.equal(root.get(StudentEntity.Fields.name), StringUtils.deleteWhitespace(element)));
+                    }
+                });
+                predicates.add(criteriaBuilder.or(listName.toArray(new Predicate[0])));
             }
-            if (StringUtils.isNoneBlank(searchFormDTO.getFage()) && !searchFormDTO.getFage().isEmpty()) {
-                searchFormDTO.setFage(StringUtils.deleteWhitespace(searchFormDTO.getFage()));
-                predicates.add(criteriaBuilder.equal(root.get(StudentEntity.Fields.age), Integer.parseInt(searchFormDTO.getFage())));
+
+            if(searchFormDTO.getFage() != null && searchFormDTO.getFage().size() > 0){
+                List<Predicate> listAge = new ArrayList<>();
+                searchFormDTO.getFage().forEach(element -> {
+                    if (StringUtils.isNoneBlank(element) && !element.isEmpty()) {
+                        listAge.add(criteriaBuilder.equal(root.get(StudentEntity.Fields.age), Integer.parseInt(StringUtils.deleteWhitespace(element))));
+                    }
+                });
+                predicates.add(criteriaBuilder.or(listAge.toArray(new Predicate[0])));
             }
+
             if (StringUtils.isNoneBlank(searchFormDTO.getFdate()) && !searchFormDTO.getFdate().isEmpty()) {
                 SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd");
                 Date date = null;

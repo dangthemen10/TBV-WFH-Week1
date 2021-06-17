@@ -1,5 +1,7 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoiZGFuZ3RoZW1lbjEwIiwiYSI6ImNrcDhmMjZ4ZzA4M3Iyb21uZm5ibzI4NG8ifQ.vHjqFsqKMyj6q_tsmrYcNg';
 var mapCenter = new mapboxgl.LngLat(139.72116702175174, 35.64997652994234);
+var mybutton = document.getElementById("myBtn");
+window.onscroll = function() {scrollFunction()};
 var map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v11',
@@ -56,10 +58,20 @@ $(document).ready(()=>{
         let coordinate = $("#latLng").val();
         jumTo(coordinate);
     });
+
+    $("#myBtn").click(() => {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    });
+
+    $("#btn-mode").click(() => {
+        var element = document.body;
+        element.classList.toggle("dark-mode");
+    });
 });
-function getUser2(currentPage){
+function getUser2(currentPage, url){
     $.ajax({
-        url: `/student/page?page=${currentPage}`,
+        url: `/student/search${url}&page=${currentPage}`,
         success: function(result){
             $('#customerTable').replaceWith(result);
         },
@@ -85,4 +97,12 @@ function createMarker(marker){
     var lon = lngLat.lng;
     var lat = lngLat.lat;
     $("#center").val(`${lon}, ${lat}`);
+}
+
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    mybutton.style.display = "block";
+  } else {
+    mybutton.style.display = "none";
+  }
 }

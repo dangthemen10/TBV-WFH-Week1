@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 
 @Controller
 public class StudentController {
@@ -34,9 +36,9 @@ public class StudentController {
     public String index(SearchFormDTO searchFormDTO, Model model,
                                 @RequestParam(name = "page", required = false, defaultValue = "1") Integer pageNo,
                                 @RequestParam(name = "size", required = false, defaultValue = "5") Integer pageSize,
-                                @RequestParam(name = "fname", required = false, defaultValue = " ") String  fname,
-                                @RequestParam(name = "fage", required = false, defaultValue = " ") String fage,
-                                @RequestParam(name = "fdate", required = false, defaultValue = " ") String fdate) {
+                                @RequestParam(name = "fname", required = false, defaultValue = "") String fname,
+                                @RequestParam(name = "fage", required = false, defaultValue = "") String fage,
+                                @RequestParam(name = "fdate", required = false, defaultValue = "") String fdate) {
         Page<StudentDTO> page = studentService.search(searchFormDTO, pageNo, pageSize);
         Integer currentPage = page.getNumber() + 1;
         StringBuilder stringBuilder = new StringBuilder().append("?fname=").append(fname).append("&fage=").append(fage)
@@ -50,14 +52,17 @@ public class StudentController {
     @GetMapping("/student/search")
     public String abc(@RequestParam(name = "page", required = false, defaultValue = "1") Integer pageNo,
                       @RequestParam(name = "size", required = false, defaultValue = "5") Integer pageSize,
+                      @RequestParam(name = "fname", required = false, defaultValue = "") String fname,
+                      @RequestParam(name = "fage", required = false, defaultValue = "") String fage,
+                      @RequestParam(name = "fdate", required = false, defaultValue = "") String fdate,
                       Model model, SearchFormDTO searchFormDTO){
 
         Page<StudentDTO> page = studentService.search(searchFormDTO, pageNo, pageSize);
         Integer currentPage = page.getNumber() + 1;
         StringBuilder stringBuilder = new StringBuilder()
-                .append("?fname=").append(searchFormDTO.getFname())
-                .append("&fage=").append(searchFormDTO.getFage())
-                .append("&fdate=").append(searchFormDTO.getFdate());
+                .append("?fname=").append(fname)
+                .append("&fage=").append(fage)
+                .append("&fdate=").append(fdate);
         model.addAttribute("url", stringBuilder);
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("page", page);
