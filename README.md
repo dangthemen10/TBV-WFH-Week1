@@ -1,6 +1,27 @@
 # TBV-WFH-Week1
 
 ****
+## Instructions for running on localhost
+* **Step 1:** Access into path: src -> main -> resources -> application.properties and edit fields url, name and password to connect database: 
+  ```
+  spring.datasource.url=jdbc:mysql://localhost:3306/student_db
+  spring.datasource.username=root
+  spring.datasource.password=root
+  ```
+  * Note: The database used in the source is MySQL.
+  
+* **Step 2:** Run project.
+
+
+  ![img_1.png](img.png)
+  
+* **Step 3:** Access into path: http://localhost:8080/student/index or http://localhost:8080/ to the main project screen.
+
+
+  ![img_1.png](img_1.png)
+
+
+  ![img_2.png](img_2.png)
 
 
 ## I. Hibernate
