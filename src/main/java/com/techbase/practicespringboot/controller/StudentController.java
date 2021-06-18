@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Set;
 
 
 @Controller
@@ -106,5 +107,11 @@ public class StudentController {
         studentService.deleteStudent(student);
         redirect.addFlashAttribute("success", "Deleted student successfully!");
         return "redirect:/student/index";
+    }
+
+    @GetMapping("/student/auto-complete")
+    public ResponseEntity<Set<String>> allName(){
+        System.out.println(studentService.allName());
+        return ResponseEntity.ok(studentService.allName());
     }
 }

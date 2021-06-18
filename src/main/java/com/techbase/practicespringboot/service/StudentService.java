@@ -5,12 +5,16 @@ import com.techbase.practicespringboot.dto.StudentDTO;
 import com.techbase.practicespringboot.entity.StudentEntity;
 import org.springframework.data.domain.Page;
 import java.io.ByteArrayInputStream;
+import java.util.List;
+import java.util.Set;
 
 public interface StudentService {
 
     Page<StudentDTO> findAllStudent(int pageNo, int pageSize);
 
     StudentEntity findOneStudent(long id);
+
+    Set<String> allName();
 
     void saveStudent(StudentEntity studentEntity);
 

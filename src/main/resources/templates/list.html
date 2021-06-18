@@ -67,16 +67,16 @@
         </div>
         <div class="col-sm-6" style="padding-left:150px">
             <form class="row align-items-center" th:action="@{/student/index}" th:object="${searchFormDTO}" method="GET">
-                <div class="col-9" style="padding-bottom: 10px;">
-                    <label class="visually-hidden" for="inlineFormInputGroupUsername">Username</label>
+                <div class="col-9 ui-widget" style="padding-bottom: 10px;">
+                    <label class="visually-hidden" for="myInput">Username</label>
                     <div class="input-group">
                         <div class="input-group-text">Name</div>
-                        <input type="text" class="form-control" id="inlineFormInputGroupUsername" th:field="*{fname}" placeholder="Type name student . . ." />
+                        <input type="text" id="myInput" class="form-control" th:field="*{fname}" placeholder="Type name student . . ." />
                     </div>
                 </div>
 
                 <div class="col-9" style="padding-bottom: 10px;">
-                    <label class="visually-hidden" for="inlineFormInputGroupUsername">Age</label>
+                    <label class="visually-hidden">Age</label>
                     <div class="input-group">
                         <div class="input-group-text">Age</div>
                         <input type="text" class="form-control" th:field="*{fage}" placeholder="Type age student . . ."/>
@@ -84,7 +84,7 @@
                 </div>
 
                 <div class="col-9" style="padding-bottom: 10px;">
-                    <label class="visually-hidden" for="inlineFormInputGroupUsername">Date</label>
+                    <label class="visually-hidden">Date</label>
                     <div class="input-group">
                         <div class="input-group-text">Date</div>
                         <input type="date" class="form-control" th:field="*{fdate}" placeholder="yyyy-mm-dd"/>
@@ -177,6 +177,10 @@
 <!-- /.container -->
 
 <footer th:replace="layout :: footer"></footer>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script th:src="@{/js/custom-mapbox.js}"></script>
 </body>
 </html>

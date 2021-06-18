@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class StudentServiceImp implements StudentService {
@@ -83,6 +84,11 @@ public class StudentServiceImp implements StudentService {
     @Override
     public void deleteStudent(StudentEntity studentEntity) {
         studentRepository.delete(studentEntity);
+    }
+
+    @Override
+    public Set<String> allName(){
+        return studentRepository.findAllName();
     }
 
     @Override

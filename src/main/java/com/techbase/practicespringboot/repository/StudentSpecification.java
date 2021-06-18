@@ -23,7 +23,7 @@ public class StudentSpecification {
                 List<Predicate> listName = new ArrayList<>();
                 searchFormDTO.getFname().forEach(element -> {
                     if (StringUtils.isNoneBlank(element) && !element.isEmpty()) {
-                        listName.add(criteriaBuilder.equal(root.get(StudentEntity.Fields.name), StringUtils.deleteWhitespace(element)));
+                        listName.add(criteriaBuilder.equal(root.get(StudentEntity.Fields.name), StringUtils.trim(element)));
                     }
                 });
                 predicates.add(criteriaBuilder.or(listName.toArray(new Predicate[0])));

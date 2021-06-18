@@ -68,6 +68,49 @@ $(document).ready(()=>{
         var element = document.body;
         element.classList.toggle("dark-mode");
     });
+
+    $.ajax({
+        url: `/student/auto-complete`,
+        success: result => {
+            var myDataArray = result;
+            $.widget('ui.myCustomWidget', $.ui.autocomplete, {
+                renderItem: function( ul, item ) {
+                    return $( '<li>' )
+                        .append( $('<a>').html(decodeURI(item.label)) )
+                        .appendTo(ul);
+                }
+            });
+
+            $('#myInput').myCustomWidget({
+                source: function( request, response ) {
+                  response( $.ui.autocomplete.filter(
+                  myDataArray, extractLast( request.term ) ) );
+                },
+                focus: function() {
+                  return false;
+                },
+                minLength:1,
+                delay:0,
+                create: function() {
+                    $(this).myCustomWidget('widget')
+                        .addClass( 'myClass' )
+                        .css({
+                            'max-height': 200,
+                            'overflow-y': 'scroll',
+                            'overflow-x': 'hidden'
+                        });
+                },
+                select: function( event, ui ) {
+                    var terms = split( this.value );
+                    terms.pop();
+                    terms.push( ui.item.value );
+                    terms.push( "" );
+                    this.value = terms.join( ", " );
+                    return false;
+                }
+            });
+        },
+    });
 });
 function getUser2(currentPage, url){
     $.ajax({
@@ -105,4 +148,12 @@ function scrollFunction() {
   } else {
     mybutton.style.display = "none";
   }
+}
+
+function split( val ) {
+    return val.split( /,\s*/ );
+}
+
+function extractLast( term ) {
+    return split( term ).pop();
 }
