@@ -72,7 +72,7 @@ public class StudentController implements ErrorController {
     }
 
     @GetMapping("/student/search")
-    public String abc(@RequestParam(name = "page", required = false, defaultValue = "1") Integer pageNo,
+    public String paging(@RequestParam(name = "page", required = false, defaultValue = "1") Integer pageNo,
                       @RequestParam(name = "size", required = false, defaultValue = "5") Integer pageSize,
                       @RequestParam(name = "fname", required = false, defaultValue = "") String fname,
                       @RequestParam(name = "fage", required = false, defaultValue = "") String fage,
