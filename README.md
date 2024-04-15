@@ -1,4 +1,4 @@
-# TBV-WFH-Week1
+# study-mapbox-gl
 
 ****
 ## Instructions for running on localhost
